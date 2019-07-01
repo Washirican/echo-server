@@ -35,6 +35,8 @@ def client(msg, log_buffer=sys.stderr):
         chunk = sock.recv(16)
         print('received "{0}"'.format(chunk.decode('utf8')), file=log_buffer)
 
+        received_message += chunk.decode('utf8')
+
     except Exception as e:
         traceback.print_exc()
         sys.exit(1)
@@ -46,6 +48,9 @@ def client(msg, log_buffer=sys.stderr):
 
         # TODO: when all is said and done, you should return the entire reply
         #  you received from the server as the return value of this function.
+
+    print('Complete Message: {}'.format(received_message))
+    return received_message
 
 
 if __name__ == '__main__':

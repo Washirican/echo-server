@@ -38,12 +38,17 @@ def server(log_buffer=sys.stderr):
             #       following line with your code. It is only here to prevent
             #       syntax errors
             conn, addr = sock.accept()
+
             try:
                 print('connection - {0}:{1}'.format(*addr), file=log_buffer)
 
                 # the inner loop will receive messages sent by the client in
-                # buffers.  When a complete message has been received, the
+                # buffers. When a complete message has been received, the
                 # loop will exit
+
+                data = []
+                bytes_recd = 0
+
                 while True:
                     # TODO: receive 16 bytes of data from the client. Store
                     #       the data you receive as 'data'.  Replace the
@@ -66,13 +71,19 @@ def server(log_buffer=sys.stderr):
                     #  of the message is a trick we learned in the lesson:
                     #  if you don't remember then ask your classmates or
                     #  instructor for a clue. :)
-                    print(data)
-                    if len(data.decode('utf8')) <= 0:
-                        break
+                    print('Raw data: {}; Lenght: {}'.format(data, len(data)))
+                    # if data == b'':
+                    #     print('\n\nComplete message read.\n\n')
+                    #     break
+                    # chunks = []
+                    # bytes_recd = 0
+
 
             except Exception as e:
+                print('Inside except {}'.format(e))
                 traceback.print_exc()
                 sys.exit(1)
+
             finally:
                 # TODO: When the inner loop exits, this 'finally' clause will
                 #       be hit. Use that opportunity to close the socket you
