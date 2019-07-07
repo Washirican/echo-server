@@ -7,9 +7,9 @@ def client(msg, log_buffer=sys.stderr):
     server_address = ('localhost', 10000)
 
     # TODO: Replace the following line with your code which will instantiate
-    #       a TCP socket with IPv4 Addressing, call the socket you make 'sock'
+    #  a TCP socket with IPv4 Addressing, call the socket you make 'sock'
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_IP)
-    print('connecting to {0} port {1}'.format(*server_address), file=log_buffer)
+    print('Connecting to {0} port {1}'.format(*server_address), file=log_buffer)
 
     # TODO: connect your socket to the server here.
     sock.connect(('127.0.0.1', 10000))
@@ -21,21 +21,27 @@ def client(msg, log_buffer=sys.stderr):
     # this try/finally block exists purely to allow us to close the socket
     # when we are finished with it
     try:
-        print('sending "{0}"'.format(msg), file=log_buffer)
+        print('Sending "{0}"'.format(msg), file=log_buffer)
 
         # TODO: send your message to the server here.
         sock.sendall(msg.encode('utf-8'))
 
         # TODO: the server should be sending you back your message as a series
-        #       of 16-byte chunks. Accumulate the chunks you get to build the
-        #       entire reply from the server. Make sure that you have received
-        #       the entire message and then you can break the loop.
-        #       Log each chunk you receive.  Use the print statement below to
-        #       do it. This will help in debugging problems
-        chunk = sock.recv(16)
-        print('received "{0}"'.format(chunk.decode('utf8')), file=log_buffer)
+        #  of 16-byte chunks. Accumulate the chunks you get to build the
+        #  entire reply from the server. Make sure that you have received
+        #  the entire message and then you can break the loop.
+        #  Log each chunk you receive.  Use the print statement below to
+        #  do it. This will help in debugging problems
 
-        received_message += chunk.decode('utf8')
+        while True:
+            chunk = sock.recv(16)
+            print('Received "{0}"'.format(chunk.decode('utf8')), file=log_buffer)
+
+            if len(chunk) >= 16:
+                received_message += chunk.decode('utf8')
+            else:
+                received_message += chunk.decode('utf8')
+                break
 
     except Exception as e:
         traceback.print_exc()
@@ -43,7 +49,7 @@ def client(msg, log_buffer=sys.stderr):
     finally:
         # TODO: after you break out of the loop receiving echoed chunks from
         #       the server you will want to close your client socket.
-        print('closing socket', file=log_buffer)
+        print('Closing socket', file=log_buffer)
         sock.close()
 
         # TODO: when all is said and done, you should return the entire reply
